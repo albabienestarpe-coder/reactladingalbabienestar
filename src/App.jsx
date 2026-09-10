@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const img = path => `/assets/web/${path}`;
+const icon = file => `/assets/ICONOS/Icono%20seccion%205/${file}`;
 
 const experiences = [
   {
@@ -26,6 +27,13 @@ const steps = [
   { icon: '♨', number: '03', title: 'RELÁJATE', text: 'Deja que el cuerpo descanse.' },
   { icon: '☼', number: '04', title: 'VUELVE', text: 'Continua tu día con otra energía.' },
 ];
+
+const stepIcons = {
+  '01': icon('1.-%20Visitanos.svg'),
+  '02': icon('2.-%20Descubrete.svg'),
+  '03': icon('3.-%20Relajate.svg'),
+  '04': icon('4.-%20Vuelve.svg'),
+};
 
 const reasons = [
   {
@@ -108,7 +116,7 @@ function Header() {
         <a href="#inicio" onClick={closeMenu}>Inicio</a>
         <a href="#experiencias" onClick={closeMenu}>Experiencias</a>
         <a href="#alba" onClick={closeMenu}>Alba</a>
-        <a href="#espacio" onClick={closeMenu}>El espacio</a>
+        <a href="#espacio" onClick={closeMenu}>TU ATMÓSFERA</a>
         <a href="#ubicacion" onClick={closeMenu}>Ubicación</a>
       </nav>
 
@@ -233,7 +241,7 @@ function Steps() {
       <div className="step-grid">
         {steps.map(step => (
           <article key={step.number}>
-            <b>{step.icon}</b>
+            <b><img src={stepIcons[step.number]} alt="" aria-hidden="true" /></b>
             <span>{step.number}</span>
             <h3>{step.title}</h3>
             <p>{step.text}</p>
@@ -508,28 +516,28 @@ function Social() {
         <p className="kicker">Seguimos cerca</p>
         <h2>La calma también continúa contigo.</h2>
         <p>Descubre nuevas experiencias, inspiración y pequeños momentos para volver a ti.</p>
-        <div className="social-links">
-          <a href="https://www.instagram.com/alba.bienestar.pe?stkn=MWh5eW5rMDBwOHI2cA==" target="_blank" rel="noopener noreferrer">
-            Instagram <small>@alba.bienestar.pe</small>
-          </a>
-          <a href="https://www.tiktok.com/@alba.bienestar?_r=1&_t=ZS-99WBpLdMv7V" target="_blank" rel="noopener noreferrer">
-            TikTok <small>@alba.bienestar</small>
-          </a>
-        </div>
         <figure className="linktree-qr">
-          <img src={img('images/linktree-qr.jpg')} alt="Codigo QR de Linktree ALBA" />
+          <a href="https://linktr.ee/qr/f6b21c29-7b18-49a4-8cd3-5efc6fd1c08b" target="_blank" rel="noopener noreferrer" aria-label="Abrir Linktree de ALBA">
+            <img src={img('images/linktree-qr.jpg')} alt="Codigo QR de Linktree ALBA" />
+          </a>
           <figcaption>Linktree</figcaption>
         </figure>
       </div>
       <div className="phones">
-        <div className="instagram-phone">
+        <a className="social-phone instagram-phone" href="https://www.instagram.com/alba.bienestar.pe?stkn=MWh5eW5rMDBwOHI2cA==" target="_blank" rel="noopener noreferrer" aria-label="Abrir Instagram de ALBA">
           <span>ALBA</span>
           <img src={img('images/instagram-desktop.jpg')} alt="Vista previa de Instagram ALBA" />
-        </div>
-        <div className="tiktok-phone">
+          <i aria-hidden="true">
+            <img src="/assets/ICONOS/social/instagram.svg" alt="" />
+          </i>
+        </a>
+        <a className="social-phone tiktok-phone" href="https://www.tiktok.com/@alba.bienestar?_r=1&_t=ZS-99WBpLdMv7V" target="_blank" rel="noopener noreferrer" aria-label="Abrir TikTok de ALBA">
           <span>ALBA</span>
           <img src={img('images/tiktok-desktop.jpg')} alt="Vista previa de TikTok ALBA" />
-        </div>
+          <i aria-hidden="true">
+            <img src="/assets/ICONOS/social/tiktok.svg" alt="" />
+          </i>
+        </a>
       </div>
     </section>
   );
@@ -552,7 +560,7 @@ function Footer() {
         <div>
           <b>ALBA</b>
           <a href="#alba">Nosotros</a>
-          <a href="#espacio">El espacio</a>
+          <a href="#espacio">Tu Atmósfera</a>
           <a href="#ubicacion">Ubicación</a>
         </div>
         <div>
@@ -596,8 +604,42 @@ function useRevealAnimation() {
   }, []);
 }
 
+function useAnchorScroll() {
+  useEffect(() => {
+    const handleClick = event => {
+      const link = event.target.closest('a[href^="#"]');
+      if (!link) return;
+
+      const hash = link.getAttribute('href');
+      if (!hash || hash === '#') return;
+
+      const target = document.querySelector(hash);
+      if (!target) return;
+
+      event.preventDefault();
+
+      const isAlba = hash === '#alba';
+      const scrollTarget = isAlba || target.matches('.hero')
+        ? target
+        : target.querySelector('.section-head, .copy, .experience-copy, .why-content, .location-intro, .booking-copy, .corporate-head') || target;
+      const isTablet = window.matchMedia('(max-width: 900px)').matches;
+      const header = document.querySelector('.topbar');
+      const headerHeight = header?.getBoundingClientRect().height || (isTablet ? 76 : 92);
+      const offset = isAlba ? headerHeight : (isTablet ? 126 : 156);
+      const top = scrollTarget.getBoundingClientRect().top + window.scrollY - offset;
+
+      window.scrollTo({ top, behavior: 'smooth' });
+      history.pushState(null, '', hash);
+    };
+
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, []);
+}
+
 export default function App() {
   useRevealAnimation();
+  useAnchorScroll();
 
   return (
     <>
