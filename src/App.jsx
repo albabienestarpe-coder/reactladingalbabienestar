@@ -90,6 +90,20 @@ const journalPosts = [
   'Ideas para regalarte un momento',
 ];
 
+const assistantQuestions = [
+  '¿Qué experiencias ofrece ALBA?',
+  '¿Cuánto dura cada experiencia?',
+  '¿Dónde está ALBA?',
+  '¿Necesito reservar?',
+];
+
+const assistantInitialMessages = [
+  {
+    role: 'assistant',
+    content: 'Hola, soy el asistente de ALBA. Puedo ayudarte a elegir una experiencia, revisar horarios o ubicar tu local más cercano.',
+  },
+];
+
 function Header() {
   const [open, setOpen] = useState(false);
 
@@ -576,6 +590,121 @@ function Footer() {
   );
 }
 
+function VirtualAssistant() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState(assistantInitialMessages);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const apiUrl = (import.meta.env.VITE_ASSISTANT_API_URL || 'http://localhost:3001').replace(/\/$/, '');
+
+  const sendMessage = async message => {
+    const cleanMessage = message.trim();
+    if (!cleanMessage || loading) return;
+
+    const nextMessages = [...messages, { role: 'user', content: cleanMessage }];
+    setMessages(nextMessages);
+    setInput('');
+    setOpen(true);
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${apiUrl}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: cleanMessage,
+          history: nextMessages.slice(-8),
+        }),
+      });
+
+      if (!response.ok) throw new Error('Assistant request failed');
+
+      const data = await response.json();
+      setMessages(current => [
+        ...current,
+        {
+          role: 'assistant',
+          content: data.reply || 'Puedo ayudarte con información de ALBA, experiencias, horarios y reservas.',
+        },
+      ]);
+    } catch (error) {
+      setMessages(current => [
+        ...current,
+        {
+          role: 'assistant',
+          content: 'Por ahora no pude conectarme. Intenta de nuevo en unos segundos o escríbenos para ayudarte con tu reserva.',
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    sendMessage(input);
+  };
+
+  return (
+    <aside className={`assistant-widget${open ? ' is-open' : ''}`} aria-label="Asistente virtual de ALBA">
+      {open && (
+        <div className="assistant-panel">
+          <header className="assistant-header">
+            <div>
+              <span>ALBA</span>
+              <strong>Asistente virtual</strong>
+            </div>
+            <button type="button" aria-label="Minimizar asistente" onClick={() => setOpen(false)}>
+              -
+            </button>
+          </header>
+
+          <div className="assistant-messages" aria-live="polite">
+            {messages.map((message, index) => (
+              <p className={`assistant-message ${message.role}`} key={`${message.role}-${index}`}>
+                {message.content}
+              </p>
+            ))}
+            {loading && <p className="assistant-message assistant">Estoy revisando...</p>}
+          </div>
+
+          <div className="assistant-prompts" aria-label="Preguntas frecuentes">
+            {assistantQuestions.map(question => (
+              <button type="button" key={question} onClick={() => sendMessage(question)}>
+                {question}
+              </button>
+            ))}
+          </div>
+
+          <form className="assistant-form" onSubmit={handleSubmit}>
+            <input
+              aria-label="Mensaje para el asistente"
+              placeholder="Escribe tu pregunta"
+              value={input}
+              onChange={event => setInput(event.target.value)}
+            />
+            <button type="submit" disabled={loading || !input.trim()}>
+              Enviar
+            </button>
+          </form>
+        </div>
+      )}
+
+      <button
+        className="assistant-toggle"
+        type="button"
+        aria-label={open ? 'Cerrar asistente virtual' : 'Abrir asistente virtual'}
+        aria-expanded={open}
+        onClick={() => setOpen(value => !value)}
+      >
+        <span>ALBA</span>
+        <small>?</small>
+      </button>
+    </aside>
+  );
+}
+
 function useRevealAnimation() {
   useEffect(() => {
     const elements = document.querySelectorAll(
@@ -660,6 +789,7 @@ export default function App() {
         <Social />
       </main>
       <Footer />
+      <VirtualAssistant />
     </>
   );
 }

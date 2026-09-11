@@ -784,6 +784,40 @@ form{grid-template-columns:1fr}
 .reasons p{font-size:.98rem;line-height:1.4}
 }
 
+.assistant-widget{position:fixed;right:clamp(18px,2.4vw,34px);bottom:clamp(18px,2.4vw,34px);z-index:80;display:grid;justify-items:end;gap:14px;font-family:var(--sans);pointer-events:none}
+.assistant-widget>*{pointer-events:auto}
+.assistant-toggle{display:grid;grid-template-columns:auto 28px;align-items:center;gap:10px;height:58px;padding:0 15px 0 20px;border:1px solid rgba(255,250,243,.64);border-radius:999px;background:#9a431c;color:#fffaf3;box-shadow:0 18px 38px rgba(62,43,34,.24);font:700 .74rem/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:transform var(--calm) var(--ease-soft),background-color var(--calm) var(--ease-soft),box-shadow var(--calm) var(--ease-soft)}
+.assistant-toggle:hover{background:#853916;transform:translateY(-2px);box-shadow:0 22px 46px rgba(62,43,34,.28)}
+.assistant-toggle small{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#ff7a2b;color:#fffaf3;font-size:1rem;letter-spacing:0}
+.assistant-panel{width:min(390px,calc(100vw - 36px));height:min(620px,calc(100vh - 118px));display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;overflow:hidden;border:1px solid rgba(219,201,183,.9);border-radius:22px;background:#fffaf3;box-shadow:0 28px 70px rgba(62,43,34,.28);animation:assistant-rise 260ms var(--ease-soft) both}
+.assistant-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 18px 16px 22px;background:#7a3518;color:#fffaf3}
+.assistant-header div{display:grid;gap:5px}
+.assistant-header span{font-size:.64rem;font-weight:700;letter-spacing:.22em}
+.assistant-header strong{font:600 1.35rem/1.05 "Cormorant Garamond",Georgia,serif}
+.assistant-header button{display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(255,250,243,.62);border-radius:50%;background:transparent;color:#fffaf3;font-size:1.4rem;line-height:1;cursor:pointer}
+.assistant-messages{display:flex;flex-direction:column;gap:10px;min-height:0;padding:18px;overflow-y:auto;background:linear-gradient(180deg,#fffaf3,#fff4ec)}
+.assistant-message{max-width:86%;margin:0;padding:11px 13px;border-radius:16px;color:#3e2b22;font-size:.9rem;line-height:1.38;overflow-wrap:anywhere}
+.assistant-message.assistant{align-self:flex-start;border:1px solid #ead8c5;background:#fff}
+.assistant-message.user{align-self:flex-end;background:#ffdfc8;color:#542813}
+.assistant-prompts{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;border-top:1px solid #ead8c5;background:#fffaf3}
+.assistant-prompts button{flex:0 0 auto;border:1px solid #e1c7b1;border-radius:999px;background:#fff;color:#7a3518;padding:9px 12px;font:700 .66rem/1.15 var(--sans);letter-spacing:.04em;cursor:pointer;white-space:nowrap}
+.assistant-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;padding:14px 16px 16px;border-top:1px solid #ead8c5;background:#fffaf3}
+.assistant-form input{width:100%;height:44px;border:1px solid #e1c7b1;border-radius:999px;background:#fff;padding:0 15px;color:#3e2b22;font:600 .86rem var(--sans);outline:none}
+.assistant-form input:focus{border-color:#c94b1b;box-shadow:0 0 0 3px rgba(255,122,43,.18)}
+.assistant-form button{height:44px;border:0;border-radius:999px;background:#c94b1b;color:#fffaf3;padding:0 16px;font:700 .68rem var(--sans);letter-spacing:.07em;text-transform:uppercase;cursor:pointer}
+.assistant-form button:disabled{opacity:.45;cursor:not-allowed}
+
+@keyframes assistant-rise{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+
+@media(max-width:600px){.assistant-widget{right:14px;bottom:14px}
+.assistant-toggle{height:52px;padding:0 12px 0 16px}
+.assistant-panel{width:calc(100vw - 28px);height:min(590px,calc(100vh - 92px));border-radius:18px}
+.assistant-header{padding:16px}
+.assistant-messages{padding:14px}
+.assistant-message{font-size:.86rem}
+.assistant-form{padding:12px}
+}
+
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
 *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 .reveal{opacity:1!important;transform:none!important}
