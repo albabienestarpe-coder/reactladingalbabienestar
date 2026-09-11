@@ -104,6 +104,12 @@ const assistantInitialMessages = [
   },
 ];
 
+const openAssistantChat = message => {
+  window.dispatchEvent(new CustomEvent('open-alba-assistant', {
+    detail: { message },
+  }));
+};
+
 function Header() {
   const [open, setOpen] = useState(false);
 
@@ -134,7 +140,13 @@ function Header() {
         <a href="#ubicacion" onClick={closeMenu}>Ubicación</a>
       </nav>
 
-      <a className="btn top-cta" href="#reserva">Reserva tu momento</a>
+      <button
+        className="btn top-cta"
+        type="button"
+        onClick={() => openAssistantChat('Quiero reservar mi momento en ALBA.')}
+      >
+        Reserva tu momento
+      </button>
     </header>
   );
 }
@@ -234,7 +246,9 @@ function Experiences() {
             <div className={`crop ${experience.crop}`} />
             <h3>{experience.title}</h3>
             <p>{experience.text}</p>
-            <a href="#reserva">Conoce la experiencia →</a>
+            <button type="button" onClick={() => openAssistantChat(`Quiero conocer más sobre ${experience.title}.`)}>
+              Conoce la experiencia →
+            </button>
           </article>
         ))}
       </div>
@@ -262,7 +276,13 @@ function Steps() {
           </article>
         ))}
       </div>
-      <a className="btn" href="#reserva">Encuentra tu momento</a>
+      <button
+        className="btn"
+        type="button"
+        onClick={() => openAssistantChat('Ayúdame a encontrar mi momento ideal en ALBA.')}
+      >
+        Encuentra tu momento
+      </button>
     </section>
   );
 }
@@ -579,8 +599,8 @@ function Footer() {
         </div>
         <div>
           <b>Ayuda</b>
-          <a href="#reserva">Contacto</a>
-          <a href="#reserva">Reservas</a>
+          <button type="button" onClick={() => openAssistantChat('Quiero contactar con ALBA.')}>Contacto</button>
+          <button type="button" onClick={() => openAssistantChat('Quiero hacer una reserva en ALBA.')}>Reservas</button>
           <a href="#">Privacidad</a>
         </div>
       </div>
@@ -645,6 +665,19 @@ function VirtualAssistant() {
     event.preventDefault();
     sendMessage(input);
   };
+
+  useEffect(() => {
+    const handleOpenAssistant = event => {
+      setOpen(true);
+      const message = event.detail?.message || '';
+      if (message) {
+        sendMessage(message);
+      }
+    };
+
+    window.addEventListener('open-alba-assistant', handleOpenAssistant);
+    return () => window.removeEventListener('open-alba-assistant', handleOpenAssistant);
+  }, [messages, loading]);
 
   return (
     <aside className={`assistant-widget${open ? ' is-open' : ''}`} aria-label="Asistente virtual de ALBA">
@@ -782,7 +815,6 @@ export default function App() {
         <Space />
         <Why />
         <Location />
-        <Booking />
         <Faq />
         <Corporate />
         <Journal />
