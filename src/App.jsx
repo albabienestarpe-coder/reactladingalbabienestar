@@ -260,7 +260,7 @@ function Steps() {
   return (
     <section className="steps numbered" data-n="05. ¿CÓMO FUNCIONA?">
       <div className="section-head">
-        <p className="kicker">Es sencillo</p>
+        <p className="kicker">ES SENCILLO</p>
         <h2 className="steps-title">
           <span>Tu pausa</span>
           <em>empieza aquí.</em>
@@ -319,12 +319,14 @@ function Why() {
     <section className="why numbered why-hero" data-n="07. PROPUESTA DE VALOR">
       <div className="why-bg" aria-hidden="true" />
       <div className="why-content">
-        <p className="kicker">Propuesta de valor</p>
-        <h2 className="why-title">
-          <span>Qué hace</span>
-          <span>diferente a</span>
-          <strong>ALBA?</strong>
-        </h2>
+        <div className="why-heading">
+          <p className="kicker">Propuesta de valor</p>
+          <h2 className="why-title">
+            <span>Qué hace</span>
+            <span>diferente a</span>
+            <strong>ALBA?</strong>
+          </h2>
+        </div>
         <div className="reasons" aria-label="Diferenciales de ALBA">
           {reasons.map(reason => (
             <article className={reason.className} key={reason.title}>
@@ -371,25 +373,27 @@ function Location() {
       </div>
       <div className="location-detail is-visible">
         <div className="location-info">
-          <p className="kicker">Local seleccionado</p>
-          <h3>{location.name}</h3>
-          <p>{location.address}</p>
-          <p className="hours">
-            <strong>Horarios</strong><br />
-            <span>{location.hours}</span>
-          </p>
-        </div>
-        <div className="map">
-          <iframe
-            title="Mapa del local ALBA"
-            width="600"
-            height="450"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="strict-origin-when-cross-origin"
-            src={location.map}
-          />
+          <div className="location-copy">
+            <p className="kicker">Local seleccionado</p>
+            <h3>{location.name}</h3>
+            <p>{location.address}</p>
+            <p className="hours">
+              <strong>Horarios</strong><br />
+              <span>{location.hours}</span>
+            </p>
+          </div>
+          <div className="map">
+            <iframe
+              title="Mapa del local ALBA"
+              width="600"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              src={location.map}
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -482,43 +486,27 @@ function Faq() {
 }
 
 function Corporate() {
-  const [flipped, setFlipped] = useState(false);
-
-  const handleKeyDown = event => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    event.preventDefault();
-    setFlipped(value => !value);
-  };
-
   return (
     <section className="gifts numbered corporate" data-n="11. EMPRESAS">
-      <div className="corporate-head">
+      <div className="corporate-kicker-wrap">
         <p className="kicker">Bienestar para equipos</p>
+      </div>
+      <div className="corporate-layout">
+        <article className="corporate-device" aria-label="Vuelve diferente para equipos">
+          <picture>
+            <source media="(max-width: 600px)" srcSet={img('images/tarjeta-Movil.png')} />
+            <source media="(max-width: 900px)" srcSet={img('images/tarjeta-Tableta.png')} />
+            <img src={img('images/tarjeta-Desktop.png')} alt="Vuelve diferente. Tu equipo merece una pausa." />
+          </picture>
+        </article>
+        <div className="corporate-content">
         <h2 className="corporate-title">
           <span>Tu equipo <em>merece un</em></span>
           <strong>DESCANSO.</strong>
         </h2>
-      </div>
-      <article
-        className={`corporate-card${flipped ? ' is-flipped' : ''}`}
-        tabIndex="0"
-        aria-label="Experiencia de bienestar para empresas"
-        onClick={() => setFlipped(value => !value)}
-        onKeyDown={handleKeyDown}
-      >
-        <div className="corporate-card-inner">
-          <div className="corporate-face corporate-front">
-            <p>Tu equipo merece una pausa.</p>
-            <strong className="corporate-card-title">
-              <em>Vuelve</em>
-              <span>diferente</span>
-            </strong>
-          </div>
-          <div className="corporate-face corporate-back">
-            <p>Creamos experiencias de bienestar para empresas que buscan cuidar a sus equipos. Un momento para respirar, desconectar y recuperar el equilibrio durante la jornada.</p>
-          </div>
+          <p>Una forma especial de reconocer a tu equipo. Regala una experiencia de bienestar para desconectar y recargar energias. Ideal como beneficio, reconocimiento o detalle corporativo. Porque cuidar a tu equipo tambien importa.</p>
         </div>
-      </article>
+      </div>
     </section>
   );
 }
@@ -559,18 +547,26 @@ function Social() {
       </div>
       <div className="phones">
         <a className="social-phone instagram-phone" href="https://www.instagram.com/alba.bienestar.pe?stkn=MWh5eW5rMDBwOHI2cA==" target="_blank" rel="noopener noreferrer" aria-label="Abrir Instagram de ALBA">
-          <span>ALBA</span>
-          <img src={img('images/instagram-desktop.jpg')} alt="Vista previa de Instagram ALBA" />
-          <i aria-hidden="true">
+          <picture>
+            <source media="(max-width: 600px)" srcSet={img('images/instagram-movil.jpg')} />
+            <source media="(max-width: 900px)" srcSet={img('images/instagram-tablet.jpg')} />
+            <img src={img('images/instagram-desktop.jpg')} alt="Vista previa de Instagram ALBA" />
+          </picture>
+          <span>
+            Visítanos aquí
             <img src="/assets/ICONOS/social/instagram.svg" alt="" />
-          </i>
+          </span>
         </a>
         <a className="social-phone tiktok-phone" href="https://www.tiktok.com/@alba.bienestar?_r=1&_t=ZS-99WBpLdMv7V" target="_blank" rel="noopener noreferrer" aria-label="Abrir TikTok de ALBA">
-          <span>ALBA</span>
-          <img src={img('images/tiktok-desktop.jpg')} alt="Vista previa de TikTok ALBA" />
-          <i aria-hidden="true">
+          <picture>
+            <source media="(max-width: 600px)" srcSet={img('images/tiktok-movil.jpg')} />
+            <source media="(max-width: 900px)" srcSet={img('images/tiktok-tablet.jpg')} />
+            <img src={img('images/tiktok-desktop.jpg')} alt="Vista previa de TikTok ALBA" />
+          </picture>
+          <span>
+            Visítanos aquí
             <img src="/assets/ICONOS/social/tiktok.svg" alt="" />
-          </i>
+          </span>
         </a>
       </div>
     </section>
@@ -741,7 +737,7 @@ function VirtualAssistant() {
 function useRevealAnimation() {
   useEffect(() => {
     const elements = document.querySelectorAll(
-      '.numbered, .value-cards article, .experience-steps article, .experience-grid article, .step-grid article, .journal-grid article, .gift-grid article, .corporate-card'
+      '.numbered, .value-cards article, .experience-steps article, .experience-grid article, .step-grid article, .journal-grid article, .gift-grid article, .corporate-device'
     );
 
     if (!('IntersectionObserver' in window)) {
@@ -783,7 +779,7 @@ function useAnchorScroll() {
       const isAlba = hash === '#alba';
       const scrollTarget = isAlba || target.matches('.hero')
         ? target
-        : target.querySelector('.section-head, .copy, .experience-copy, .why-content, .location-intro, .booking-copy, .corporate-head') || target;
+        : target.querySelector('.section-head, .copy, .experience-copy, .why-content, .location-intro, .booking-copy, .corporate-kicker-wrap') || target;
       const isTablet = window.matchMedia('(max-width: 900px)').matches;
       const header = document.querySelector('.topbar');
       const headerHeight = header?.getBoundingClientRect().height || (isTablet ? 76 : 92);
@@ -815,7 +811,6 @@ export default function App() {
         <Space />
         <Why />
         <Location />
-        <Faq />
         <Corporate />
         <Journal />
         <Social />
