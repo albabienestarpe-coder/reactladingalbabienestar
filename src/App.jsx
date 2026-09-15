@@ -94,13 +94,13 @@ const assistantQuestions = [
   '¿Qué experiencias ofrece ALBA?',
   '¿Cuánto dura cada experiencia?',
   '¿Dónde está ALBA?',
-  '¿Necesito reservar?',
+  'Necesito reservar',
 ];
 
 const assistantInitialMessages = [
   {
     role: 'assistant',
-    content: 'Hola, soy Abbi. Puedo ayudarte a elegir una experiencia, revisar horarios o ubicar tu local más cercano.',
+    content: 'Hola,soy Abbi. 👋🏼\nPuedo ayudarte a elegir una experiencia, revisar horarios o ubicar tu local más cercano.',
   },
 ];
 
