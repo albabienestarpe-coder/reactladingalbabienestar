@@ -100,7 +100,7 @@ const assistantQuestions = [
 const assistantInitialMessages = [
   {
     role: 'assistant',
-    content: 'Hola, soy el asistente de ALBA. Puedo ayudarte a elegir una experiencia, revisar horarios o ubicar tu local más cercano.',
+    content: 'Hola, soy Abbi. Puedo ayudarte a elegir una experiencia, revisar horarios o ubicar tu local más cercano.',
   },
 ];
 
@@ -681,7 +681,7 @@ function VirtualAssistant() {
           <header className="assistant-header">
             <div>
               <span>ALBA</span>
-              <strong>Asistente virtual</strong>
+              <strong>Abbi</strong>
             </div>
             <button type="button" aria-label="Minimizar asistente" onClick={() => setOpen(false)}>
               -
@@ -690,11 +690,23 @@ function VirtualAssistant() {
 
           <div className="assistant-messages" aria-live="polite">
             {messages.map((message, index) => (
-              <p className={`assistant-message ${message.role}`} key={`${message.role}-${index}`}>
-                {message.content}
-              </p>
+              <div className={`assistant-message-row ${message.role}`} key={`${message.role}-${index}`}>
+                <img
+                  className="assistant-message-avatar"
+                  src={message.role === 'assistant' ? img('Abbi/Icono%20de%20Avatar.jpg') : '/assets/ICONOS/user-avatar.svg'}
+                  alt=""
+                />
+                <p className={`assistant-message ${message.role}`}>
+                  {message.content}
+                </p>
+              </div>
             ))}
-            {loading && <p className="assistant-message assistant">Estoy revisando...</p>}
+            {loading && (
+              <div className="assistant-message-row assistant">
+                <img className="assistant-message-avatar" src={img('Abbi/Icono%20de%20Avatar.jpg')} alt="" />
+                <p className="assistant-message assistant">Estoy revisando...</p>
+              </div>
+            )}
           </div>
 
           <div className="assistant-prompts" aria-label="Preguntas frecuentes">
@@ -726,8 +738,11 @@ function VirtualAssistant() {
         aria-expanded={open}
         onClick={() => setOpen(value => !value)}
       >
-        <span>ALBA</span>
-        <small>?</small>
+        <span className="assistant-toggle-bubble">Hola, soy Abbi ✨</span>
+        <span className="assistant-avatar" aria-hidden="true">
+          <img src={img('Abbi/Icono%20de%20Avatar.jpg')} alt="" />
+          <span className="assistant-status" />
+        </span>
       </button>
     </aside>
   );
