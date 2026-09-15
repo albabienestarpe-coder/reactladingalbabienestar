@@ -62,9 +62,9 @@ const locations = {
   mall: {
     button: 'Mall Aventura Plaza Trujillo',
     name: 'Mall Aventura Plaza Trujillo',
-    address: 'Mall Aventura Plaza Trujillo',
+    address: 'Av. Mansiche 2112, Trujillo',
     hours: 'Lunes a domingo, 10:00 a.m. - 10:00 p.m.',
-    map: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8089587.300646681!2d-88.80414497499999!3d-8.102112299999991!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ad3dbb84162eaf%3A0xca9481ed99654e25!2sMallplaza%20Trujillo!5e0!3m2!1ses!2spe!4v1788297131635!5m2!1ses!2spe',
+    map: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.99379922312!2d-79.0508605249917!3d-8.102112291926781!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ad3dbb84162eaf%3A0xca9481ed99654e25!2sMallplaza%20Trujillo!5e0!3m2!1ses!2spe!4v1789451110396!5m2!1ses!2spe',
   },
   pizarro: {
     button: 'Centro Comercial Plaza Pizarro Trujillo',
@@ -374,11 +374,10 @@ function Location() {
       <div className="location-detail is-visible">
         <div className="location-info">
           <div className="location-copy">
-            <p className="kicker">Local seleccionado</p>
-            <h3>{location.name}</h3>
-            <p>{location.address}</p>
+            <p className="location-label">Dirección</p>
+            <p className="location-address">{location.address}</p>
             <p className="hours">
-              <strong>Horarios</strong><br />
+              <strong>Horarios</strong>
               <span>{location.hours}</span>
             </p>
           </div>
